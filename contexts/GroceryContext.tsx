@@ -56,6 +56,11 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
       name: "Dairy",
       image: "",
     },
+    {
+      id: "4",
+      name: "Snacks",
+      image: "",
+    },
   ]);
 
   const [units, setUnits] = useState<Unit[]>([

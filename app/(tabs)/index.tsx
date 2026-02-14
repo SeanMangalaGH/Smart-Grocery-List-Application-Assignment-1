@@ -64,6 +64,7 @@ export default function Index() {
           );
         }}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
       ></FlatList>
     </View>
   );
@@ -72,8 +73,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
     backgroundColor: "#f2f3f5",
   },
 
