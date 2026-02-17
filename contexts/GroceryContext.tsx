@@ -1,37 +1,24 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext } from "react";
+import { Category, GroceryItem, Unit } from "./GroceryTypes";
+import useGroceryState from "./useGroceryState";
 
 // Grocery Context DB
 // Use to store and edit Categories, Items, and Units data
 // Author: Sean Mangala
 // Date: 2026-02-15
 
-export interface Category {
-  id: string;
-  name: string;
-  image: string;
-}
-
-export interface Unit {
-  id: string;
-  name: string;
-}
-
-export interface GroceryItem {
-  id: string;
-  description: string;
-  categoryId: string;
-  quantity: number;
-  unitId: string;
-  image: string;
-  isCompleted: boolean;
-}
-
 interface GroceryContextType {
   categories: Category[];
   units: Unit[];
   items: GroceryItem[];
+  addCategory: (newCategory: Category) => void;
+  deleteCategory: (id: string) => void;
+  editCategory: (id: string, updatedCategory: Category) => void;
   getUnitName: (id: string) => string;
   toggleItemCompleted: (id: string) => void;
+  addItem: (newItem: GroceryItem) => void;
+  deleteItem: (id: string) => void;
+  editItem: (id: string, updatedItem: GroceryItem) => void;
 }
 
 const GroceryContext = createContext<GroceryContextType | undefined>(undefined);
@@ -45,109 +32,8 @@ export const useGrocery = () => {
 };
 
 export const GroveryProvider = ({ children }: { children: ReactNode }) => {
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      id: "1",
-      name: "Produce",
-      image: "",
-    },
-    {
-      id: "2",
-      name: "Meat",
-      image: "",
-    },
-    {
-      id: "3",
-      name: "Dairy",
-      image: "",
-    },
-  ]);
-
-  const [units, setUnits] = useState<Unit[]>([
-    { id: "1", name: "pcs" },
-    { id: "2", name: "pks" },
-    { id: "3", name: "kgs" },
-    { id: "4", name: "lbs" },
-    { id: "5", name: "oz" },
-    { id: "6", name: "g" },
-    { id: "7", name: "ml" },
-    { id: "8", name: "L" },
-  ]);
-
-  const [items, setItems] = useState<GroceryItem[]>([
-    {
-      id: "1",
-      description: "Fuji Apple",
-      categoryId: "1",
-      quantity: 2,
-      unitId: "2",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "2",
-      description: "Bokchoy",
-      categoryId: "1",
-      quantity: 1,
-      unitId: "3",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "3",
-      description: "Long green beans",
-      categoryId: "1",
-      quantity: 1,
-      unitId: "2",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "4",
-      description: "Neck bone pork",
-      categoryId: "2",
-      quantity: 4,
-      unitId: "1",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "5",
-      description: "Pork belly - BBQ Slices",
-      categoryId: "2",
-      quantity: 1,
-      unitId: "3",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "6",
-      description: "Chicken breast",
-      categoryId: "2",
-      quantity: 2,
-      unitId: "3",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "7",
-      description: "Milk",
-      categoryId: "3",
-      quantity: 1,
-      unitId: "1",
-      image: "",
-      isCompleted: false,
-    },
-    {
-      id: "8",
-      description: "Eggs",
-      categoryId: "3",
-      quantity: 1,
-      unitId: "2",
-      image: "",
-      isCompleted: false,
-    },
-  ]);
+  const { categories, setCategories, units, setUnits, items, setItems } =
+    useGroceryState();
 
   // Function returns unit name given unit id
   const getUnitName = (id: string) => {
@@ -164,9 +50,65 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  // Item functions for adding, deleting, and editing items in items state
+  // Adds new item to items state
+  const addItem = (newItem: GroceryItem) => {
+    setItems((items) => [...items, newItem]);
+  };
+
+  // Deletes item from items state
+  const deleteItem = (id: string) => {
+    setItems((items) => items.filter((item) => item.id !== id));
+  };
+
+  // Edits item in items state
+  const editItem = (id: string, updatedItem: GroceryItem) => {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, ...updatedItem } : item,
+      ),
+    );
+  };
+
+  // Category functions for adding, deleting, and editing categories in categories state
+  // Adds new category to categories state
+  const addCategory = (newCategory: Category) => {
+    setCategories((categories) => [...categories, newCategory]);
+  };
+
+  // Deletes category from categories state
+  const deleteCategory = (id: string) => {
+    setCategories((categories) =>
+      categories.filter((category) => category.id !== id),
+    );
+    // Cascade-delete items that belong to the removed category
+    setItems((items) => items.filter((item) => item.categoryId !== id));
+  };
+
+  // Edits category in categories state
+  const editCategory = (id: string, updatedCategory: Category) => {
+    setCategories((categories) =>
+      categories.map((category) =>
+        category.id === id ? { ...category, ...updatedCategory } : category,
+      ),
+    );
+  };
+
   return (
     <GroceryContext.Provider
-      value={{ categories, items, units, getUnitName, toggleItemCompleted }}
+      value={{
+        categories,
+        items,
+        units,
+        addCategory,
+        deleteCategory,
+        editCategory,
+        getUnitName,
+        toggleItemCompleted,
+        addItem,
+        deleteItem,
+        editItem,
+      }}
     >
       {children}
     </GroceryContext.Provider>
