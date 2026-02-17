@@ -2,14 +2,8 @@ import { useGrocery } from "@/contexts/GroceryContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Input from "../components/addItem/Input";
 
 // Add Item page
 // Author: Sean Mangala
@@ -34,14 +28,7 @@ const addItem = () => {
       </TouchableOpacity>
 
       {/* Item Name */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Item Name *</Text>
-        <TextInput
-          style={styles.field}
-          placeholder="Enter item name"
-          placeholderTextColor="#9CA3AF"
-        />
-      </View>
+      <Input label="Item Name" placeholder="Enter item name" required />
 
       {/* Category dropdown */}
       <View style={styles.inputContainer}>
@@ -68,14 +55,7 @@ const addItem = () => {
       {/* Quantity */}
       <View style={styles.quantityContainer}>
         {/* Quantity input */}
-        <View style={[styles.inputContainer, styles.halfField]}>
-          <Text style={styles.label}>Qty.</Text>
-          <TextInput
-            style={styles.field}
-            placeholder="1"
-            placeholderTextColor="#9CA3AF"
-          />
-        </View>
+        <Input label="Qty." placeholder="1" required style={styles.halfField} />
 
         {/* Unit dropdown */}
         <View style={[styles.inputContainer, styles.halfField]}>

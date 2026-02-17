@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext } from "react";
-import { Category, GroceryItem, Unit } from "./GroceryTypes";
+import { Category, Item, Unit } from "./GroceryTypes";
 import useGroceryState from "./useGroceryState";
 
 // Grocery Context DB
@@ -10,15 +10,15 @@ import useGroceryState from "./useGroceryState";
 interface GroceryContextType {
   categories: Category[];
   units: Unit[];
-  items: GroceryItem[];
+  items: Item[];
   addCategory: (newCategory: Category) => void;
   deleteCategory: (id: string) => void;
   editCategory: (id: string, updatedCategory: Category) => void;
   getUnitName: (id: string) => string;
   toggleItemCompleted: (id: string) => void;
-  addItem: (newItem: GroceryItem) => void;
+  addItem: (newItem: Item) => void;
   deleteItem: (id: string) => void;
-  editItem: (id: string, updatedItem: GroceryItem) => void;
+  editItem: (id: string, updatedItem: Item) => void;
 }
 
 const GroceryContext = createContext<GroceryContextType | undefined>(undefined);
@@ -52,7 +52,7 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
 
   // Item functions for adding, deleting, and editing items in items state
   // Adds new item to items state
-  const addItem = (newItem: GroceryItem) => {
+  const addItem = (newItem: Item) => {
     setItems((items) => [...items, newItem]);
   };
 
@@ -62,7 +62,7 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Edits item in items state
-  const editItem = (id: string, updatedItem: GroceryItem) => {
+  const editItem = (id: string, updatedItem: Item) => {
     setItems((items) =>
       items.map((item) =>
         item.id === id ? { ...item, ...updatedItem } : item,

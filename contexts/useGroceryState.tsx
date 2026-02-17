@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Category, GroceryItem, Unit } from "./GroceryTypes";
+import { Category, Item, Unit } from "./GroceryTypes";
 
 export const useGroceryState = () => {
   const [categories, setCategories] = useState<Category[]>([
@@ -19,7 +19,7 @@ export const useGroceryState = () => {
     { id: "8", name: "L" },
   ]);
 
-  const [items, setItems] = useState<GroceryItem[]>([
+  const [items, setItems] = useState<Item[]>([
     {
       id: "1",
       description: "Fuji Apple",

@@ -9,7 +9,7 @@ export interface Unit {
   name: string;
 }
 
-export interface GroceryItem {
+export interface Item {
   id: string;
   description: string;
   categoryId: string;
