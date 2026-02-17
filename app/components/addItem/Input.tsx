@@ -13,6 +13,7 @@ type InputProps = {
   value?: string;
   onChangeText?: (text: string) => void;
   required?: boolean;
+  containerStyle?: object;
 } & TextInputProps;
 
 const Input = ({
@@ -21,10 +22,11 @@ const Input = ({
   value,
   onChangeText,
   required,
+  containerStyle,
   ...rest
 }: InputProps) => {
   return (
-    <View style={styles.inputContainer}>
+    <View style={[styles.inputContainer, containerStyle]}>
       <Text style={styles.label}>
         {label} {required && <Text style={styles.required}>*</Text>}
       </Text>

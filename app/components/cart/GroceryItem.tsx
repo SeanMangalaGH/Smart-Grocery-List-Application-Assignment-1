@@ -1,5 +1,4 @@
 import { Item } from "@/contexts/GroceryTypes";
-import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -12,7 +11,12 @@ type ItemProps = {
 
 const GroceryItem = ({ item, unit, onToggle }: ItemProps) => {
   return (
-    <View style={styles.itemCard}>
+    <View
+      style={[
+        styles.itemCard,
+        item.isCompleted && { backgroundColor: "#dbf5cf" },
+      ]}
+    >
       {/* Checkbox */}
       <Checkbox
         value={item.isCompleted}
@@ -21,7 +25,10 @@ const GroceryItem = ({ item, unit, onToggle }: ItemProps) => {
       ></Checkbox>
 
       {/* Text */}
-      <View style={styles.textContainer}>
+      <TouchableOpacity
+        style={styles.textContainer}
+        onPress={() => Alert.alert("Edit item feature")}
+      >
         <Text
           style={[styles.itemText, item.isCompleted && styles.itemCompleted]}
         >
@@ -32,13 +39,6 @@ const GroceryItem = ({ item, unit, onToggle }: ItemProps) => {
         <Text style={styles.quantity}>
           {item.quantity} {unit}
         </Text>
-      </View>
-
-      {/* Action buttons */}
-      <TouchableOpacity
-        onPress={() => Alert.alert("Edit item", "Feature coming soon :)")}
-      >
-        <Ionicons name="information-circle-outline" size={25} color="#059669" />
       </TouchableOpacity>
     </View>
   );
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   itemCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 12,
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
   },
 
   itemText: {
-    fontSize: 13,
+    fontSize: 18,
+    justifyContent: "center",
   },
 
   itemCompleted: {
@@ -86,5 +87,8 @@ const styles = StyleSheet.create({
 
   textContainer: {
     flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
