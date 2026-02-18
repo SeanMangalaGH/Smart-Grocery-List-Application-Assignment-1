@@ -1,20 +1,25 @@
 import { Category } from "@/contexts/GroceryTypes";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type CategoryProps = {
   category: Category;
-  onPress?: () => void;
 };
 
-const CategoryHeader = ({ category, onPress }: CategoryProps) => {
+const CategoryHeader = ({ category }: CategoryProps) => {
+  const router = useRouter();
+
   return (
     <View style={styles.categoryHeader}>
       <Text style={styles.categoryTitle}>{category.name}</Text>
       <TouchableOpacity
         onPress={() => {
-          onPress?.();
+          router.push({
+            pathname: "/addItem",
+            params: { categoryId: category.id },
+          });
         }}
       >
         <Ionicons name="add" size={20} color="white" />

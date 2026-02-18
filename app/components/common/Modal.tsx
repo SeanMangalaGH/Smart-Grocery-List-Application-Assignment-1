@@ -1,9 +1,11 @@
+import { Ionicons } from "@expo/vector-icons";
 import {
   KeyboardAvoidingView,
   ModalProps,
   Platform,
   Modal as RNModal,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -11,12 +13,16 @@ type PROPS = ModalProps & {
   isOpen: boolean;
   withInput?: boolean;
   containerStyle?: object;
+  closable?: boolean;
+  onPressClose?: () => void;
 };
 
 export const Modal = ({
   isOpen,
   withInput,
   containerStyle = { width: "80%" },
+  closable = false,
+  onPressClose,
   children,
   ...rest
 }: PROPS) => {
@@ -25,11 +31,25 @@ export const Modal = ({
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      {children}
+      <View style={[styles.modalArea, containerStyle]}>
+        {closable && (
+          <TouchableOpacity style={styles.closeButton} onPress={onPressClose}>
+            <Ionicons name="close" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+        {children}
+      </View>
     </KeyboardAvoidingView>
   ) : (
     <View style={styles.container}>
-      <View style={[styles.modalArea, containerStyle]}>{children}</View>
+      <View style={[styles.modalArea, containerStyle]}>
+        {closable && (
+          <TouchableOpacity style={styles.closeButton} onPress={onPressClose}>
+            <Ionicons name="close" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+        {children}
+      </View>
     </View>
   );
 
@@ -58,8 +78,14 @@ const styles = StyleSheet.create({
   },
 
   modalArea: {
-    backgroundColor: "#fff",
+    backgroundColor: "#f2f3f5",
     padding: 20,
     borderRadius: 12,
+  },
+
+  closeButton: {
+    position: "absolute",
+    top: 12,
+    right: 12,
   },
 });

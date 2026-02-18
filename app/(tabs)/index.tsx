@@ -1,11 +1,11 @@
 import { useGrocery } from "@/contexts/GroceryContext";
 import { Item } from "@/contexts/GroceryTypes";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import CategoryHeader from "../components/cart/CategoryHeader";
 import GroceryItem from "../components/cart/GroceryItem";
-import ButtonField from "../components/common/ButtonField";
 import Modal from "../components/common/Modal";
+import EditItem from "../modules/EditItem";
 
 // Cart page
 // Author: Sean Mangala
@@ -52,16 +52,14 @@ export default function Index() {
       ></FlatList>
 
       {/* Edit item modal */}
-      <Modal isOpen={isEditingItem} containerStyle={{ width: "80%" }}>
-        <Text>Edit Item Modal</Text>
-        <Text>{selectedItem?.description}</Text>
-        <ButtonField
-          title="Cancel"
-          variant="secondary"
-          onPress={() => {
-            setIsEditingItem(false);
-          }}
-        />
+      <Modal
+        isOpen={isEditingItem}
+        containerStyle={{ width: "95%" }}
+        closable
+        withInput
+        onPressClose={() => setIsEditingItem(false)}
+      >
+        <EditItem item={selectedItem} onPress={() => setIsEditingItem(false)} />
       </Modal>
     </View>
   );

@@ -1,6 +1,7 @@
 import { useGrocery } from "@/contexts/GroceryContext";
 import { Item } from "@/contexts/GroceryTypes";
-import React, { useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -19,11 +20,14 @@ import ImagePickerField from "../components/common/ImagePickerField";
 
 const addItem = () => {
   const { categories, units, createItem } = useGrocery();
+  const { categoryId } = useLocalSearchParams();
 
   // States for inputs
   const [itemDescription, setItemDescription] = useState("");
   const [quantity, setQuantity] = useState("1");
-  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    (categoryId as string) || "",
+  );
   const [selectedUnitId, setSelectedUnitId] = useState("");
   const [imageSource, setImageSource] = useState<string | undefined>(undefined);
 
@@ -57,6 +61,12 @@ const addItem = () => {
     setImageSource(undefined);
   };
 
+  useEffect(() => {
+    if (categoryId) {
+      setSelectedCategoryId(categoryId as string);
+    }
+  }, [categoryId]);
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView
@@ -71,10 +81,10 @@ const addItem = () => {
           containerStyle={{ height: "40%" }}
         />
 
-        {/* Item Name */}
+        {/* Item Description */}
         <Input
-          label="Item Name"
-          placeholder="Enter item name"
+          label="Item Description"
+          placeholder="Enter item description"
           value={itemDescription}
           onChangeText={setItemDescription}
           required
