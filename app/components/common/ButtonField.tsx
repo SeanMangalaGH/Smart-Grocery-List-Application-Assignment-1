@@ -35,8 +35,8 @@ const ButtonField = ({
   textStyle,
   disabled = false,
   iconName,
-  iconSize,
-  iconColor,
+  iconSize = 20,
+  iconColor = "white",
 }: ButtonFieldProps) => {
   return (
     <TouchableOpacity
@@ -54,8 +54,8 @@ const ButtonField = ({
         {iconName && (
           <Ionicons
             name={iconName}
-            size={iconSize || 20}
-            color={iconColor || "white"}
+            size={iconSize}
+            color={iconColor}
             style={title ? { marginRight: 8 } : undefined}
           />
         )}

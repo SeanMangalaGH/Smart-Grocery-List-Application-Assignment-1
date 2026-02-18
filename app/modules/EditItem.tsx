@@ -7,14 +7,15 @@ import Input from "../components/addItem/Input";
 import ButtonField from "../components/common/ButtonField";
 import ImagePickerField from "../components/common/ImagePickerField";
 import Modal from "../components/common/Modal";
+import DeleteConfirm from "./DeleteConfirm";
 
 type EditItemProps = {
   item: Item | null;
-  onPress: () => void;
+  setIsEditing: (isEditing: boolean) => void;
 };
 
-const EditItem = ({ item, onPress }: EditItemProps) => {
-  const { categories, units, createItem } = useGrocery();
+const EditItem = ({ item, setIsEditing }: EditItemProps) => {
+  const { categories, units, editItem, deleteItem } = useGrocery();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [itemDescription, setItemDescription] = useState(
@@ -30,6 +31,34 @@ const EditItem = ({ item, onPress }: EditItemProps) => {
   const [imageSource, setImageSource] = useState<string | undefined>(
     item?.image,
   );
+
+  const handleEditItem = () => {
+    const qty = parseInt(quantity) || 1;
+
+    if (!item) return;
+    const newItem: Item = {
+      id: item.id,
+      description: itemDescription,
+      quantity: qty,
+      categoryId: selectedCategoryId,
+      unitId: selectedUnitId,
+      image: imageSource,
+      isCompleted: false,
+    };
+
+    editItem(newItem);
+
+    //Alert.alert("Success", "Item added successfully!");
+
+    //Reset values
+    setItemDescription("");
+    setQuantity("1");
+    setSelectedCategoryId("");
+    setSelectedUnitId("");
+    setImageSource(undefined);
+
+    setIsEditing(false);
+  };
 
   return (
     <View>
@@ -99,8 +128,16 @@ const EditItem = ({ item, onPress }: EditItemProps) => {
           iconSize={20}
         />
         <View style={styles.rightButtons}>
-          <ButtonField title="Cancel" variant="outline" onPress={onPress} />
-          <ButtonField title="Save" variant="primary" onPress={onPress} />
+          <ButtonField
+            title="Cancel"
+            variant="outline"
+            onPress={() => setIsEditing(false)}
+          />
+          <ButtonField
+            title="Save"
+            variant="primary"
+            onPress={() => handleEditItem()}
+          />
         </View>
       </View>
 
@@ -110,27 +147,17 @@ const EditItem = ({ item, onPress }: EditItemProps) => {
         containerStyle={{ width: "85%" }}
         onPressClose={() => setIsDeleting(false)}
       >
-        <View style={{ gap: 10, width: "100%" }}>
-          <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "600" }}
-          >
-            Delete item?
-          </Text>
-          <Text style={{ textAlign: "center", color: "#6B7280" }}>
-            Are you sure you want to delete this item? This action cannot be
-            undone.
-          </Text>
-          <ButtonField
-            title="Delete"
-            variant="danger"
-            onPress={() => setIsDeleting(false)}
-          />
-          <ButtonField
-            title="Cancel"
-            variant="outline"
-            onPress={() => setIsDeleting(false)}
-          />
-        </View>
+        <DeleteConfirm
+          header="Delete Item"
+          message="Are you sure you want to delete this item?"
+          onConfirm={() => {
+            if (!item) return;
+            deleteItem(item.id);
+            setIsDeleting(false);
+            setIsEditing(false);
+          }}
+          onCancel={() => setIsDeleting(false)}
+        />
       </Modal>
     </View>
   );

@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext } from "react";
+import { Alert } from "react-native";
 import { Category, Item, Unit } from "./GroceryTypes";
 import useGroceryState from "./useGroceryState";
 
@@ -18,7 +19,7 @@ interface GroceryContextType {
   toggleItemCompleted: (id: string) => void;
   createItem: (newItem: Item) => void;
   deleteItem: (id: string) => void;
-  editItem: (id: string, updatedItem: Item) => void;
+  editItem: (updatedItem: Item) => void;
 }
 
 const GroceryContext = createContext<GroceryContextType | undefined>(undefined);
@@ -53,6 +54,11 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   // Item functions for adding, deleting, and editing items in items state
   // Adds new item to items state
   const createItem = (newItem: Item) => {
+    if (!newItem.description || !newItem.categoryId || !newItem.unitId) {
+      Alert.alert("Error", "Please fill in all required fields.");
+      return;
+    }
+
     setItems((items) => [...items, newItem]);
   };
 
@@ -62,10 +68,19 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Edits item in items state
-  const editItem = (id: string, updatedItem: Item) => {
+  const editItem = (updatedItem: Item) => {
+    if (
+      !updatedItem.description ||
+      !updatedItem.categoryId ||
+      !updatedItem.unitId
+    ) {
+      Alert.alert("Error", "Please fill in all required fields.");
+      return;
+    }
+
     setItems((items) =>
       items.map((item) =>
-        item.id === id ? { ...item, ...updatedItem } : item,
+        item.id === updatedItem.id ? { ...item, ...updatedItem } : item,
       ),
     );
   };

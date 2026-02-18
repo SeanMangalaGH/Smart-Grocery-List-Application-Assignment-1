@@ -32,11 +32,6 @@ const addItem = () => {
   const [imageSource, setImageSource] = useState<string | undefined>(undefined);
 
   const handleAddItem = () => {
-    if (!itemDescription || !selectedCategoryId || !selectedUnitId) {
-      Alert.alert("Error", "Please fill in all required fields.");
-      return;
-    }
-
     const qty = parseInt(quantity) || 1;
 
     const newItem: Item = {

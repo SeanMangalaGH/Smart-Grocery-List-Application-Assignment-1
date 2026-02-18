@@ -59,7 +59,7 @@ export default function Index() {
         withInput
         onPressClose={() => setIsEditingItem(false)}
       >
-        <EditItem item={selectedItem} onPress={() => setIsEditingItem(false)} />
+        <EditItem item={selectedItem} setIsEditing={setIsEditingItem} />
       </Modal>
     </View>
   );
