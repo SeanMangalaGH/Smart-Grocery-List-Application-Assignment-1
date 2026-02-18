@@ -1,16 +1,34 @@
+import AddCategory from "@/app/modules/AddCategory";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import Modal from "../common/Modal";
 
-const AddCategoryCard = () => {
+type AddCategoryCardProps = {
+  isAdding: boolean;
+  setIsAdding: (isAdding: boolean) => void;
+};
+
+const AddCategoryCard = ({ isAdding, setIsAdding }: AddCategoryCardProps) => {
   return (
-    <TouchableOpacity
-      style={styles.addCard}
-      onPress={() => Alert.alert("Add category", "Feature coming soon :)")}
-    >
-      <Ionicons name="add" size={35} color="grey" />
-      <Text style={styles.title}>Add category</Text>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        style={styles.addCard}
+        onPress={() => setIsAdding(true)}
+      >
+        <Ionicons name="add" size={35} color="grey" />
+        <Text style={styles.title}>Add category</Text>
+      </TouchableOpacity>
+
+      <Modal
+        isOpen={isAdding}
+        withInput
+        closable
+        onPressClose={() => setIsAdding(false)}
+      >
+        <AddCategory setIsAdding={setIsAdding} />
+      </Modal>
+    </>
   );
 };
 

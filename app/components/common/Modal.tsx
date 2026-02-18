@@ -31,7 +31,7 @@ export const Modal = ({
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={[styles.modalArea, containerStyle]}>
+      <View style={[styles.modalArea, containerStyle]} pointerEvents="auto">
         {closable && (
           <TouchableOpacity style={styles.closeButton} onPress={onPressClose}>
             <Ionicons name="close" size={24} color="black" />
@@ -41,7 +41,7 @@ export const Modal = ({
       </View>
     </KeyboardAvoidingView>
   ) : (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents="auto">
       <View style={[styles.modalArea, containerStyle]}>
         {closable && (
           <TouchableOpacity style={styles.closeButton} onPress={onPressClose}>
@@ -59,6 +59,7 @@ export const Modal = ({
       transparent
       animationType="fade"
       statusBarTranslucent
+      onRequestClose={onPressClose}
       {...rest}
     >
       {content}

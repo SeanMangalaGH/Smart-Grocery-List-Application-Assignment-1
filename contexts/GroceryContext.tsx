@@ -14,7 +14,7 @@ interface GroceryContextType {
   items: Item[];
   addCategory: (newCategory: Category) => void;
   deleteCategory: (id: string) => void;
-  editCategory: (id: string, updatedCategory: Category) => void;
+  editCategory: (updatedCategory: Category) => void;
   getUnitName: (id: string) => string;
   toggleItemCompleted: (id: string) => void;
   createItem: (newItem: Item) => void;
@@ -88,6 +88,10 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   // Category functions for adding, deleting, and editing categories in categories state
   // Adds new category to categories state
   const addCategory = (newCategory: Category) => {
+    if (!newCategory.name) {
+      Alert.alert("Error", "Please fill in category name.");
+      return;
+    }
     setCategories((categories) => [...categories, newCategory]);
   };
 
@@ -101,10 +105,17 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Edits category in categories state
-  const editCategory = (id: string, updatedCategory: Category) => {
+  const editCategory = (updatedCategory: Category) => {
+    if (!updatedCategory.name) {
+      Alert.alert("Error", "Please fill in category name.");
+      return;
+    }
+
     setCategories((categories) =>
       categories.map((category) =>
-        category.id === id ? { ...category, ...updatedCategory } : category,
+        category.id === updatedCategory.id
+          ? { ...category, ...updatedCategory }
+          : category,
       ),
     );
   };

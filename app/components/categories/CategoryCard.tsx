@@ -5,9 +5,10 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type CategoryCardProps = {
   category: Category;
+  isModal?: boolean;
 };
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({ category, isModal }: CategoryCardProps) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{category.name}</Text>
@@ -16,6 +17,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
         onPress={() =>
           Alert.alert("Upload category image", "Feature coming soon :)")
         }
+        disabled={isModal}
       >
         <Ionicons name="image" size={50} color="grey" />
       </TouchableOpacity>
@@ -26,6 +28,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
           onPress={() =>
             Alert.alert("Delete category", "Feature coming soon :)")
           }
+          disabled={isModal}
         >
           <Ionicons name="trash" size={24} color="red" />
         </TouchableOpacity>
@@ -33,6 +36,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
         <TouchableOpacity
           style={styles.iconButtons}
           onPress={() => Alert.alert("Edit category", "Feature coming soon :)")}
+          disabled={isModal}
         >
           <Ionicons name="pencil" size={24} />
         </TouchableOpacity>

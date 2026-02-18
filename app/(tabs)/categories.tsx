@@ -1,5 +1,5 @@
 import { useGrocery } from "@/contexts/GroceryContext";
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import AddCategoryCard from "../components/categories/AddCategoryCard";
 import CategoryCard from "../components/categories/CategoryCard";
@@ -11,6 +11,7 @@ import CategoryCard from "../components/categories/CategoryCard";
 const categories = () => {
   const { categories } = useGrocery();
   const categoryWithAdd = [{ id: "add", isAddButton: true }, ...categories];
+  const [isAdding, setIsAdding] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -19,9 +20,11 @@ const categories = () => {
         keyExtractor={(category) => category.id}
         renderItem={({ item }) => {
           if ("isAddButton" in item) {
-            return <AddCategoryCard></AddCategoryCard>;
+            return (
+              <AddCategoryCard isAdding={isAdding} setIsAdding={setIsAdding} />
+            );
           } else {
-            return <CategoryCard category={item} />;
+            return <CategoryCard category={item} isModal={isAdding} />;
           }
         }}
         numColumns={2}
