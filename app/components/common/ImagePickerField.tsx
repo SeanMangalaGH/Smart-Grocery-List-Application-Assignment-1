@@ -2,15 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import React from "react";
-import {
-  Alert,
-  Linking,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ImageProps = {
   imageSource?: string;
@@ -30,32 +22,32 @@ const ImagePickerField = ({
   const pickImage = async () => {
     try {
       // check permissions
-      if (Platform.OS !== "web") {
-        console.log(status);
-        if (status?.status !== "granted") {
-          const permissionResponse = await requestPermission();
-          if (permissionResponse.status !== "granted") {
-            Alert.alert(
-              "Permission required",
-              "Permission to access media library is required to upload images.",
-              [
-                {
-                  text: "Cancel",
-                },
-                {
-                  text: "Open Settings",
-                  onPress: () => {
-                    Platform.OS === "ios"
-                      ? Linking.openURL("app-settings:")
-                      : Linking.openSettings();
-                  },
-                },
-              ],
-            );
-            return;
-          }
-        }
-      }
+      // if (Platform.OS !== "web") {
+      //   console.log(status);
+      //   if (status?.status !== "granted") {
+      //     const permissionResponse = await requestPermission();
+      //     if (permissionResponse.status !== "granted") {
+      //       Alert.alert(
+      //         "Permission required",
+      //         "Permission to access media library is required to upload images.",
+      //         [
+      //           {
+      //             text: "Cancel",
+      //           },
+      //           {
+      //             text: "Open Settings",
+      //             onPress: () => {
+      //               Platform.OS === "ios"
+      //                 ? Linking.openURL("app-settings:")
+      //                 : Linking.openSettings();
+      //             },
+      //           },
+      //         ],
+      //       );
+      //       return;
+      //     }
+      //   }
+      // }
 
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: "images",

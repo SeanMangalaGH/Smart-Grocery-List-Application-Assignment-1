@@ -15,7 +15,7 @@ export interface Item {
   categoryId: string;
   quantity: number;
   unitId: string;
-  image: string;
+  image?: string;
   isCompleted: boolean;
 }
 

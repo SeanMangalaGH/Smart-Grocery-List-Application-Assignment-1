@@ -16,7 +16,7 @@ interface GroceryContextType {
   editCategory: (id: string, updatedCategory: Category) => void;
   getUnitName: (id: string) => string;
   toggleItemCompleted: (id: string) => void;
-  addItem: (newItem: Item) => void;
+  createItem: (newItem: Item) => void;
   deleteItem: (id: string) => void;
   editItem: (id: string, updatedItem: Item) => void;
 }
@@ -52,7 +52,7 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
 
   // Item functions for adding, deleting, and editing items in items state
   // Adds new item to items state
-  const addItem = (newItem: Item) => {
+  const createItem = (newItem: Item) => {
     setItems((items) => [...items, newItem]);
   };
 
@@ -105,7 +105,7 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
         editCategory,
         getUnitName,
         toggleItemCompleted,
-        addItem,
+        createItem,
         deleteItem,
         editItem,
       }}

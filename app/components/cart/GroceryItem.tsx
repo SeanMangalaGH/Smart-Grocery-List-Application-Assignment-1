@@ -1,15 +1,16 @@
 import { Item } from "@/contexts/GroceryTypes";
 import Checkbox from "expo-checkbox";
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ItemProps = {
   item: Item;
   unit: string;
   onToggle: (id: string) => void;
+  onPress: () => void;
 };
 
-const GroceryItem = ({ item, unit, onToggle }: ItemProps) => {
+const GroceryItem = ({ item, unit, onToggle, onPress }: ItemProps) => {
   return (
     <View
       style={[
@@ -27,7 +28,9 @@ const GroceryItem = ({ item, unit, onToggle }: ItemProps) => {
       {/* Text */}
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => Alert.alert("Edit item feature")}
+        onPress={() => {
+          onPress?.();
+        }}
       >
         <Text
           style={[styles.itemText, item.isCompleted && styles.itemCompleted]}

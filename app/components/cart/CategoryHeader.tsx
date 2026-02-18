@@ -1,20 +1,21 @@
 import { Category } from "@/contexts/GroceryTypes";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type CategoryProps = {
   category: Category;
+  onPress?: () => void;
 };
 
-const CategoryHeader = ({ category }: CategoryProps) => {
+const CategoryHeader = ({ category, onPress }: CategoryProps) => {
   return (
     <View style={styles.categoryHeader}>
       <Text style={styles.categoryTitle}>{category.name}</Text>
       <TouchableOpacity
-        onPress={() =>
-          Alert.alert("Add item under category", "Feature coming soon :)")
-        }
+        onPress={() => {
+          onPress?.();
+        }}
       >
         <Ionicons name="add" size={20} color="white" />
       </TouchableOpacity>

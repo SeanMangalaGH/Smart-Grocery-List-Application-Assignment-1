@@ -9,8 +9,8 @@ import {
 
 type InputProps = {
   label: string;
-  placeholder: string;
-  value?: string;
+  placeholder?: string;
+  value?: string | number;
   onChangeText?: (text: string) => void;
   required?: boolean;
   containerStyle?: object;
@@ -59,6 +59,8 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#ffffff",
     paddingHorizontal: 12,
+    borderRadius: 8,
+    fontSize: 16,
   },
 
   label: {
