@@ -1,14 +1,8 @@
 import { useGrocery } from "@/contexts/GroceryContext";
 import { Item } from "@/contexts/GroceryTypes";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import DropdownField from "../components/addItem/DropdownField";
 import Input from "../components/addItem/Input";
 import ButtonField from "../components/common/ButtonField";
@@ -28,7 +22,7 @@ const addItem = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     (categoryId as string) || "",
   );
-  const [selectedUnitId, setSelectedUnitId] = useState("");
+  const [selectedUnitId, setSelectedUnitId] = useState("1");
   const [imageSource, setImageSource] = useState<string | undefined>(undefined);
 
   const handleAddItem = () => {
@@ -44,16 +38,16 @@ const addItem = () => {
       isCompleted: false,
     };
 
-    createItem(newItem);
+    if (createItem(newItem)) {
+      //Reset values
+      setItemDescription("");
+      setQuantity("1");
+      setSelectedCategoryId("");
+      setSelectedUnitId("1");
+      setImageSource(undefined);
 
-    Alert.alert("Success", "Item added successfully!");
-
-    //Reset values
-    setItemDescription("");
-    setQuantity("1");
-    setSelectedCategoryId("");
-    setSelectedUnitId("");
-    setImageSource(undefined);
+      router.push("/");
+    }
   };
 
   useEffect(() => {

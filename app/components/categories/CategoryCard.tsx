@@ -1,33 +1,36 @@
 import { Category } from "@/contexts/GroceryTypes";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import ImagePickerField from "../common/ImagePickerField";
 
 type CategoryCardProps = {
   category: Category;
-  isModal?: boolean;
+  isModal: boolean;
+  onDeletePress?: () => void;
+  onEditPress?: () => void;
 };
 
-const CategoryCard = ({ category, isModal }: CategoryCardProps) => {
+const CategoryCard = ({
+  category,
+  isModal,
+  onDeletePress,
+  onEditPress,
+}: CategoryCardProps) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{category.name}</Text>
-      <TouchableOpacity
-        style={styles.imageContainer}
-        onPress={() =>
-          Alert.alert("Upload category image", "Feature coming soon :)")
-        }
-        disabled={isModal}
-      >
-        <Ionicons name="image" size={50} color="grey" />
-      </TouchableOpacity>
+
+      <ImagePickerField
+        imageSource={category.image}
+        containerStyle={{ aspectRatio: 1, backgroundColor: "#e9e9e9" }}
+        disabled
+      />
 
       <View style={styles.actionButtons}>
         <TouchableOpacity
           style={styles.iconButtons}
-          onPress={() =>
-            Alert.alert("Delete category", "Feature coming soon :)")
-          }
+          onPress={onDeletePress}
           disabled={isModal}
         >
           <Ionicons name="trash" size={24} color="red" />
@@ -35,7 +38,7 @@ const CategoryCard = ({ category, isModal }: CategoryCardProps) => {
 
         <TouchableOpacity
           style={styles.iconButtons}
-          onPress={() => Alert.alert("Edit category", "Feature coming soon :)")}
+          onPress={onEditPress}
           disabled={isModal}
         >
           <Ionicons name="pencil" size={24} />

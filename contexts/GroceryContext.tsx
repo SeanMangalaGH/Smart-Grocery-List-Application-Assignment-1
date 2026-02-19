@@ -12,14 +12,14 @@ interface GroceryContextType {
   categories: Category[];
   units: Unit[];
   items: Item[];
-  addCategory: (newCategory: Category) => void;
+  createCategory: (newCategory: Category) => boolean;
   deleteCategory: (id: string) => void;
-  editCategory: (updatedCategory: Category) => void;
+  editCategory: (updatedCategory: Category) => boolean;
   getUnitName: (id: string) => string;
   toggleItemCompleted: (id: string) => void;
-  createItem: (newItem: Item) => void;
+  createItem: (newItem: Item) => boolean;
   deleteItem: (id: string) => void;
-  editItem: (updatedItem: Item) => void;
+  editItem: (updatedItem: Item) => boolean;
 }
 
 const GroceryContext = createContext<GroceryContextType | undefined>(undefined);
@@ -54,12 +54,13 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   // Item functions for adding, deleting, and editing items in items state
   // Adds new item to items state
   const createItem = (newItem: Item) => {
-    if (!newItem.description || !newItem.categoryId || !newItem.unitId) {
-      Alert.alert("Error", "Please fill in all required fields.");
-      return;
+    if (!newItem.description || !newItem.categoryId) {
+      Alert.alert("Fill in all required fields.");
+      return false;
     }
 
     setItems((items) => [...items, newItem]);
+    return true;
   };
 
   // Deletes item from items state
@@ -69,13 +70,9 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
 
   // Edits item in items state
   const editItem = (updatedItem: Item) => {
-    if (
-      !updatedItem.description ||
-      !updatedItem.categoryId ||
-      !updatedItem.unitId
-    ) {
-      Alert.alert("Error", "Please fill in all required fields.");
-      return;
+    if (!updatedItem.description || !updatedItem.categoryId) {
+      Alert.alert("Fill in all required fields.");
+      return false;
     }
 
     setItems((items) =>
@@ -83,16 +80,18 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
         item.id === updatedItem.id ? { ...item, ...updatedItem } : item,
       ),
     );
+    return true;
   };
 
   // Category functions for adding, deleting, and editing categories in categories state
   // Adds new category to categories state
-  const addCategory = (newCategory: Category) => {
+  const createCategory = (newCategory: Category) => {
     if (!newCategory.name) {
-      Alert.alert("Error", "Please fill in category name.");
-      return;
+      Alert.alert("Fill in category name.");
+      return false;
     }
     setCategories((categories) => [...categories, newCategory]);
+    return true;
   };
 
   // Deletes category from categories state
@@ -107,8 +106,8 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
   // Edits category in categories state
   const editCategory = (updatedCategory: Category) => {
     if (!updatedCategory.name) {
-      Alert.alert("Error", "Please fill in category name.");
-      return;
+      Alert.alert("Fill in category name.");
+      return false;
     }
 
     setCategories((categories) =>
@@ -118,6 +117,7 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
           : category,
       ),
     );
+    return true;
   };
 
   return (
@@ -126,7 +126,7 @@ export const GroveryProvider = ({ children }: { children: ReactNode }) => {
         categories,
         items,
         units,
-        addCategory,
+        createCategory,
         deleteCategory,
         editCategory,
         getUnitName,

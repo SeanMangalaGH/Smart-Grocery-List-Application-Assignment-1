@@ -46,18 +46,17 @@ const EditItem = ({ item, setIsEditing }: EditItemProps) => {
       isCompleted: false,
     };
 
-    editItem(newItem);
+    //Check if valid
+    if (editItem(newItem)) {
+      setIsEditing(false);
 
-    //Alert.alert("Success", "Item added successfully!");
-
-    //Reset values
-    setItemDescription("");
-    setQuantity("1");
-    setSelectedCategoryId("");
-    setSelectedUnitId("");
-    setImageSource(undefined);
-
-    setIsEditing(false);
+      //Reset values
+      setItemDescription("");
+      setQuantity("1");
+      setSelectedCategoryId("");
+      setSelectedUnitId("");
+      setImageSource(undefined);
+    }
   };
 
   return (

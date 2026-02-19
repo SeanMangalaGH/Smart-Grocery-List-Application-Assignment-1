@@ -6,29 +6,39 @@ import Input from "../components/addItem/Input";
 import ButtonField from "../components/common/ButtonField";
 import ImagePickerField from "../components/common/ImagePickerField";
 
-type AddCategoryProps = {
-  setIsAdding: (isAdding: boolean) => void;
+type EditCategoryProps = {
+  category: Category | null;
+  setIsEditing: (isEditing: boolean) => void;
 };
 
-const AddCategory = ({ setIsAdding }: AddCategoryProps) => {
-  const { createCategory } = useGrocery();
-  const [imageSource, setImageSource] = useState<string | undefined>(undefined);
-  const [categoryName, setCategoryName] = useState("");
+const EditCategory = ({ category, setIsEditing }: EditCategoryProps) => {
+  const { editCategory } = useGrocery();
+  const [imageSource, setImageSource] = useState("");
+  const [categoryName, setCategoryName] = useState(
+    category ? category.name : "",
+  );
 
-  const handleAddCategory = () => {
-    const category: Category = {
-      id: Date.now().toString(), // used timestamp for a temporary pk id
+  const handleEditCategory = () => {
+    if (!category) return;
+    const newCategory: Category = {
+      id: category.id,
       name: categoryName,
+      image: imageSource,
     };
+
     //Check if valid
-    if (createCategory(category)) {
-      setIsAdding(false);
+    if (editCategory(newCategory)) {
+      setIsEditing(false);
+
+      //Reset values
+      setImageSource("");
+      setCategoryName("");
     }
   };
 
   return (
     <View>
-      <Text style={styles.headerText}>Add Category</Text>
+      <Text style={styles.headerText}>Edit Category</Text>
 
       {/* Item image */}
       <ImagePickerField
@@ -54,15 +64,15 @@ const AddCategory = ({ setIsAdding }: AddCategoryProps) => {
         }}
       >
         <ButtonField
-          title="Add"
+          title="Save"
           onPress={() => {
-            handleAddCategory();
+            handleEditCategory();
           }}
         />
 
         <ButtonField
           title="Cancel"
-          onPress={() => setIsAdding(false)}
+          onPress={() => setIsEditing(false)}
           variant="outline"
         />
       </View>
@@ -70,7 +80,7 @@ const AddCategory = ({ setIsAdding }: AddCategoryProps) => {
   );
 };
 
-export default AddCategory;
+export default EditCategory;
 
 const styles = StyleSheet.create({
   headerText: {

@@ -6,15 +6,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ImageProps = {
   imageSource?: string;
-  onImageSelected: (uri: string) => void;
+  onImageSelected?: (uri: string) => void;
   label?: string;
+  disabled?: boolean;
   containerStyle?: object;
 };
 
 const ImagePickerField = ({
   imageSource,
   onImageSelected,
-  label = "Upload photo",
+  label,
+  disabled,
   containerStyle,
 }: ImageProps) => {
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
@@ -56,9 +58,7 @@ const ImagePickerField = ({
         quality: 1,
       });
 
-      console.log(result);
-
-      if (!result.canceled) {
+      if (!result.canceled && onImageSelected) {
         onImageSelected(result.assets[0].uri);
       }
     } catch (error: any) {
@@ -70,13 +70,14 @@ const ImagePickerField = ({
     <TouchableOpacity
       style={[styles.container, containerStyle]}
       onPress={pickImage}
+      disabled={disabled}
     >
       {imageSource ? (
         <ExpoImage source={{ uri: imageSource }} style={styles.image} />
       ) : (
         <View style={styles.placeholder}>
           <Ionicons name="image" size={50} color={"#b1b1b1"}></Ionicons>
-          <Text style={styles.label}>{label}</Text>
+          {label && <Text style={styles.label}>{label}</Text>}
         </View>
       )}
     </TouchableOpacity>
@@ -87,16 +88,15 @@ export default ImagePickerField;
 
 const styles = StyleSheet.create({
   container: {
-    height: "40%",
     backgroundColor: "#dadada",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
-    marginBottom: 8,
   },
 
   placeholder: {
     alignItems: "center",
+    justifyContent: "center",
   },
 
   label: {
