@@ -1,14 +1,14 @@
 import { Category } from "@/contexts/GroceryTypes";
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import ButtonField from "../common/ButtonField";
 import ImagePickerField from "../common/ImagePickerField";
 
 type CategoryCardProps = {
   category: Category;
   isModal: boolean;
-  onDeletePress?: () => void;
-  onEditPress?: () => void;
+  onDeletePress: () => void;
+  onEditPress: () => void;
 };
 
 const CategoryCard = ({
@@ -28,21 +28,23 @@ const CategoryCard = ({
       />
 
       <View style={styles.actionButtons}>
-        <TouchableOpacity
-          style={styles.iconButtons}
+        <ButtonField
           onPress={onDeletePress}
-          disabled={isModal}
-        >
-          <Ionicons name="trash" size={24} color="red" />
-        </TouchableOpacity>
+          variant="outline"
+          iconName="trash"
+          iconSize={24}
+          iconColor="red"
+          buttonStyle={styles.iconButtons}
+        ></ButtonField>
 
-        <TouchableOpacity
-          style={styles.iconButtons}
+        <ButtonField
           onPress={onEditPress}
-          disabled={isModal}
-        >
-          <Ionicons name="pencil" size={24} />
-        </TouchableOpacity>
+          variant="outline"
+          iconName="pencil"
+          iconSize={24}
+          iconColor="black"
+          buttonStyle={styles.iconButtons}
+        ></ButtonField>
       </View>
     </View>
   );
@@ -99,11 +101,6 @@ const styles = StyleSheet.create({
 
   iconButtons: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 10,
     paddingVertical: 8,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

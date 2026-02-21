@@ -153,7 +153,11 @@ const EditItem = ({ item, setIsEditing }: EditItemProps) => {
             if (!item) return;
             deleteItem(item.id);
             setIsDeleting(false);
-            setIsEditing(false);
+
+            //Let modal finish animation before closing parent
+            setTimeout(() => {
+              setIsEditing(false);
+            }, 50);
           }}
           onCancel={() => setIsDeleting(false)}
         />
